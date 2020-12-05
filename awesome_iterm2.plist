@@ -1,0 +1,13 @@
+{
+  "Profiles": [
+    {
+      "Name": "kb-style-profile",
+      "Guid": "27a2b543-1d6b-4cd9-b157-aa5af6433226",
+      "AllowClipboardAccess": true,
+      "Normal Font" : "Monaco 15",
+      "Non Ascii Font" : "Monaco 15",
+      "Silence Bell": true,
+      "Prompt Before Closing 2" : false
+    }
+  ]
+}

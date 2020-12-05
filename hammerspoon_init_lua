@@ -1,0 +1,41 @@
+-- HYPER = {'ctrl', 'shift', 'alt', 'cmd'}
+ctrl_option_command = {'ctrl', 'alt', 'cmd'}
+
+hs.loadSpoon("SpoonInstall")
+
+spoon.SpoonInstall.repos.ShiftIt = {
+   url = "https://github.com/peterklijn/hammerspoon-shiftit",
+   desc = "ShiftIt spoon repository",
+   branch = "master",
+}
+
+spoon.SpoonInstall:andUse("ShiftIt", { repo = "ShiftIt" })
+spoon.ShiftIt:bindHotkeys({})
+
+spoon.SpoonInstall:andUse("ReloadConfiguration", {})
+spoon.ReloadConfiguration:bindHotkeys({})
+
+-- https://www.hammerspoon.org/Spoons/ClipboardTool
+function setUpClipboardTool()
+  spoon.SpoonInstall:andUse("ClipboardTool", {})
+  -- ClipboardTool:start()
+  spoon.ClipboardTool.paste_on_select = true
+  spoon.ClipboardTool.show_in_menubar = false
+  spoon.ClipboardTool.max_size = true
+  spoon.ClipboardTool.max_entry_size = 4990
+
+  -- defaults to 0.8, but that seems kind of often to check
+  spoon.ClipboardTool.frequency = 2
+
+  spoon.ClipboardTool:bindHotkeys({
+    toggle_clipboard = {ctrl_option_command, "v"}
+  })
+  spoon.ClipboardTool:start()
+end
+
+-- Main
+
+-- function from here:
+-- https://msol.io/blog/tech/work-more-efficiently-on-your-mac-for-developers/
+
+setUpClipboardTool()
