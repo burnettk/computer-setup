@@ -117,5 +117,5 @@ defaults write com.googlecode.iterm2 "Default Bookmark Guid" "27a2b543-1d6b-4cd9
 # open "/tmp/Solarized Dark.itermcolors"
 
 if [[ "$USER" == "kburnett" ]]; then
-  echo -e "[user]\n  name = burnettk\n  email = burnettk@users.noreply.github.com\n" > "$HOME/.gitconfig.user.personal"
+  echo -e "[user]\n  name = burnettk\n  email = burnettk@users.noreply.github.com" > "$HOME/.gitconfig.user.personal"
 fi
