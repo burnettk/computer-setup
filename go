@@ -7,7 +7,10 @@ if [[ ! -f hammerspoon_init_lua ]]; then
   exit 1
 fi
 
-echo 'about to run sudo chmod -R 755 /usr/local/share/zsh'
+# if not writable, output as an FYI. always ensure permissions regardless, since it's fast and harmless.
+if ! test -w "/usr/local/share/zsh"; then
+  echo 'about to run sudo chmod -R 755 /usr/local/share/zsh'
+fi
 sudo chmod -R 755 /usr/local/share/zsh
 
 brew list --cask > /tmp/brew_cask_list
@@ -18,6 +21,13 @@ for brew_cask in google-chrome dropbox google-drive-file-stream hammerspoon iter
     brew install --cask "$brew_cask"
   fi
 done
+
+# https://osxdaily.com/2010/09/12/disable-application-downloaded-from-the-internet-message-in-mac-os-x/
+xattr -d -r com.apple.quarantine /Applications/Google\ Chrome.app
+xattr -d -r com.apple.quarantine /Applications/Dropbox.app
+xattr -d -r com.apple.quarantine /Applications/Hammerspoon.app
+xattr -d -r com.apple.quarantine /Applications/iTerm.app
+xattr -d -r com.apple.quarantine /Applications/SpaceLauncher.app
 
 mkdir -p "$HOME/.hammerspoon"
 if [[ ! -f "$HOME/.hammerspoon/init.lua" ]] || ! diff hammerspoon_init_lua "$HOME/.hammerspoon/init.lua" > /dev/null; then
@@ -35,7 +45,7 @@ if [[ ! -d "$HOME/.hammerspoon/Spoons/SpoonInstall.spoon" ]]; then
   popd
 fi
 
-echo 'need to put .ssh dir in place'
+# echo 'need to put .ssh dir in place'
 
 if ! defaults read com.apple.Dock autohide &> /dev/null; then
   echo 'setting dock to auto-hide'
@@ -75,6 +85,10 @@ fi
 
 # faster mouse. 3 is the max from the UI. reference: https://paulminors.com/blog/how-to-speed-up-mouse-tracking-on-mac/
 defaults write -g com.apple.mouse.scaling  7
+
+# faster key repeat rate. reference: https://apple.stackexchange.com/a/83923
+defaults write -g InitialKeyRepeat -int 10 # normal minimum is 15 (225 ms)
+defaults write -g KeyRepeat -int 1 # normal minimum is 2 (30 ms)
 
 # do not ask to quit after we tell it to quit
 defaults write com.googlecode.iterm2 PromptOnQuit -bool false
