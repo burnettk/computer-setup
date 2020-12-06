@@ -14,13 +14,13 @@ brew list --cask > /tmp/brew_cask_list
 
 for brew_cask in google-chrome dropbox google-drive-file-stream hammerspoon iterm2 spacelauncher; do
   if ! grep -q "$brew_cask" /tmp/brew_cask_list; then
-    echo "installing cask: ${brew_cask}" 
-    brew cask install "$brew_cask"
+    echo "installing brew cask: ${brew_cask}" 
+    brew install --cask "$brew_cask"
   fi
 done
 
 mkdir -p "$HOME/.hammerspoon"
-if ! diff hammerspoon_init_lua "$HOME/.hammerspoon/init.lua" > /dev/null; then
+if [[ ! -f "$HOME/.hammerspoon/init.lua" ]] || ! diff hammerspoon_init_lua "$HOME/.hammerspoon/init.lua" > /dev/null; then
   echo 'putting in place hammerspoon configs'
   cp hammerspoon_init_lua "$HOME/.hammerspoon/init.lua"
 fi
@@ -51,6 +51,10 @@ if [[ ! -f "$HOME/Library/Application Support/iTerm2/DynamicProfiles/awesome_ite
   # https://apple.stackexchange.com/questions/92173/how-to-prevent-terminal-from-resizing-when-font-size-is-changed
   # https://apple.stackexchange.com/questions/313356/iterm2-command-line-configuration
   # https://iterm2.com/documentation-dynamic-profiles.html
+
+  # this directory may not exist if you have not yet launched iTerm2
+  mkdir -p "$HOME/Library/Application Support/iTerm2/DynamicProfiles"
+
   echo 'putting iterm2 plist in place'
   cp awesome_iterm2.plist "$HOME/Library/Application Support/iTerm2/DynamicProfiles/awesome_iterm2.plist"
 elif ! diff awesome_iterm2.plist "$HOME/Library/Application Support/iTerm2/DynamicProfiles/awesome_iterm2.plist" > /dev/null; then
