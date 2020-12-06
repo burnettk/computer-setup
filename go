@@ -17,7 +17,7 @@ brew list --cask > /tmp/brew_cask_list
 
 for brew_cask in google-chrome dropbox google-drive-file-stream hammerspoon iterm2 spacelauncher; do
   if ! grep -q "$brew_cask" /tmp/brew_cask_list; then
-    echo "installing brew cask: ${brew_cask}" 
+    echo "installing brew cask: ${brew_cask}"
     brew install --cask "$brew_cask"
   fi
 done
@@ -37,7 +37,7 @@ fi
 
 if [[ ! -d "$HOME/.hammerspoon/Spoons/SpoonInstall.spoon" ]]; then
   rm -rf /tmp/SpoonInstall.spoon
-  echo 'installing SpoonInstall meta spoon installer for Hammerspoon' 
+  echo 'installing SpoonInstall meta spoon installer for Hammerspoon'
   curl --fail -s --location 'https://github.com/Hammerspoon/Spoons/raw/master/Spoons/SpoonInstall.spoon.zip' -o /tmp/SpoonInstall.spoon.zip
   pushd /tmp
   unzip SpoonInstall.spoon.zip
@@ -51,7 +51,7 @@ if ! defaults read com.apple.Dock autohide &> /dev/null; then
   echo 'setting dock to auto-hide'
   defaults write com.apple.Dock autohide -bool TRUE
   killall Dock
-  
+
   # i think the above works and is hotter, but just in case.
   # https://discussions.apple.com/thread/5026935
   # osascript -e "tell application \"System Events\" to set the autohide of the dock preferences to true"
@@ -115,3 +115,7 @@ defaults write com.googlecode.iterm2 "Default Bookmark Guid" "27a2b543-1d6b-4cd9
 # it seems iterm2 already has solarized dark and light built in
 # curl -s --fail 'https://raw.githubusercontent.com/altercation/solarized/master/iterm2-colors-solarized/Solarized%20Dark.itermcolors -o "/tmp/Solarized Dark.itermcolors"
 # open "/tmp/Solarized Dark.itermcolors"
+
+if [[ "$USER" == "kburnett" ]]; then
+  echo -e "[user]\n  name = burnettk\n  email = burnettk@users.noreply.github.com\n" > "$HOME/.gitconfig.user.personal"
+fi
