@@ -116,6 +116,10 @@ defaults write com.googlecode.iterm2 "Default Bookmark Guid" "27a2b543-1d6b-4cd9
 # curl -s --fail 'https://raw.githubusercontent.com/altercation/solarized/master/iterm2-colors-solarized/Solarized%20Dark.itermcolors -o "/tmp/Solarized Dark.itermcolors"
 # open "/tmp/Solarized Dark.itermcolors"
 
+# stuff specific to me
 if [[ "$USER" == "kburnett" ]]; then
   echo -e "[user]\n  name = burnettk\n  email = burnettk@users.noreply.github.com" > "$HOME/.gitconfig.user.personal"
+
+  # make chrome the default browser
+   /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --make-default-browser
 fi
