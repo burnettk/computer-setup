@@ -87,8 +87,8 @@ fi
 defaults write -g com.apple.mouse.scaling  7
 
 # faster key repeat rate. reference: https://apple.stackexchange.com/a/83923
-defaults write -g InitialKeyRepeat -int 10 # normal minimum is 15 (225 ms)
-defaults write -g KeyRepeat -int 1 # normal minimum is 2 (30 ms)
+defaults write -g InitialKeyRepeat -int 15 # normal minimum is 15 (225 ms), but you can try going down to 10
+defaults write -g KeyRepeat -int 2 # normal minimum is 2 (30 ms), but you can try going down to 1
 
 # do not ask to quit after we tell it to quit
 defaults write com.googlecode.iterm2 PromptOnQuit -bool false
