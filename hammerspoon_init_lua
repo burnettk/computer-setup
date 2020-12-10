@@ -13,7 +13,11 @@ spoon.SpoonInstall:andUse("ShiftIt", { repo = "ShiftIt" })
 spoon.ShiftIt:bindHotkeys({})
 
 spoon.SpoonInstall:andUse("ReloadConfiguration", {})
-spoon.ReloadConfiguration:bindHotkeys({})
+spoon.ReloadConfiguration:bindHotkeys({
+  reloadConfiguration = {ctrl_option_command, "r"}
+})
+-- spoon.ReloadConfiguration:start()
+
 
 -- https://www.hammerspoon.org/Spoons/ClipboardTool
 function setUpClipboardTool()
@@ -39,3 +43,5 @@ end
 -- https://msol.io/blog/tech/work-more-efficiently-on-your-mac-for-developers/
 
 setUpClipboardTool()
+
+hs.alert.show("Hammerspoon config loaded")
