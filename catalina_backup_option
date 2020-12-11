@@ -1,0 +1,24 @@
+https://www.imore.com/how-downgrade-macos
+https://www.imore.com/how-make-bootable-installer-drive-downgrade
+
+
+~/p/g/computer-setup main % sudo /Applications/Install\ macOS\ Catalina.app/Contents/Resources/createinstallmedia --volume /Volumes/MyVolume
+Ready to start.
+To continue we need to erase the volume at /Volumes/MyVolume.
+If you wish to continue type (Y) then press return: Y
+Erasing disk: 0%... 10%... 20%... 30%... 100%
+Copying to disk: 0%... 10%... 20%... 30%... 100%
+Making disk bootable...
+Copying boot files...
+Install media now available at "/Volumes/Install macOS Catalina"
+
+
+# How to use macOS Catalina as an installer boot drive
+Once macOS Catalina is installed on your external drive, you can boot up and install any Mac with the drive plugged into it.
+
+Turn off the Mac you want to install macOS Catalina with the bootable drive.
+Connect the external drive to your Mac via the USB port.
+Turn on your Mac.
+Hold down the Option key when you hear the startup chime.
+Select the external drive with macOS Catalina on it from the list of systems to start up your computer.
+The installation process will begin. Follow the steps to install macOS Catalina onto your Mac or partitioned hard drive.
