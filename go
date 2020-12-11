@@ -123,3 +123,8 @@ if [[ "$USER" == "kburnett" ]]; then
   # make chrome the default browser
    /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --make-default-browser
 fi
+
+if [[ -f "$HOME/Google Drive File Stream/My Drive/dotfiles/setup" ]]; then
+  echo 'running ~/Google Drive File Stream/My Drive/dotfiles/setup'
+  "$HOME/Google Drive File Stream/My Drive/dotfiles/setup"
+fi
