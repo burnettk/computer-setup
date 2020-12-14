@@ -46,8 +46,6 @@ if [[ ! -d "$HOME/.hammerspoon/Spoons/SpoonInstall.spoon" ]]; then
   popd
 fi
 
-# echo 'need to put .ssh dir in place'
-
 if ! defaults read com.apple.Dock autohide &> /dev/null; then
   echo 'setting dock to auto-hide'
   defaults write com.apple.Dock autohide -bool TRUE
@@ -58,6 +56,7 @@ if ! defaults read com.apple.Dock autohide &> /dev/null; then
   # osascript -e "tell application \"System Events\" to set the autohide of the dock preferences to true"
 fi
 
+# reference: https://www.jamf.com/jamf-nation/discussions/10576/menu-bar-customization
 current_menu_extras="$(defaults read com.apple.systemuiserver menuExtras)"
 if ! grep -q Volume <<< "$current_menu_extras"; then
   echo 'adding Volume to Menu Extras'
