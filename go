@@ -41,6 +41,7 @@ if [[ ! -d "$HOME/.hammerspoon/Spoons/SpoonInstall.spoon" ]]; then
   curl --fail -s --location 'https://github.com/Hammerspoon/Spoons/raw/master/Spoons/SpoonInstall.spoon.zip' -o /tmp/SpoonInstall.spoon.zip
   pushd /tmp
   unzip SpoonInstall.spoon.zip
+  mkdir -p "$HOME/.hammerspoon/Spoons"
   mv SpoonInstall.spoon "$HOME/.hammerspoon/Spoons"
   popd
 fi
