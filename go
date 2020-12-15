@@ -15,7 +15,7 @@ sudo chmod -R 755 /usr/local/share/zsh
 
 brew list --cask > /tmp/brew_cask_list
 
-for brew_cask in google-chrome dropbox google-drive-file-stream hammerspoon iterm2 spacelauncher; do
+for brew_cask in google-chrome dropbox google-drive-file-stream hammerspoon iterm2 spacelauncher bluejeans; do
   if ! grep -q "$brew_cask" /tmp/brew_cask_list; then
     echo "installing brew cask: ${brew_cask}"
     brew install --cask "$brew_cask"
@@ -28,6 +28,9 @@ xattr -d -r com.apple.quarantine /Applications/Dropbox.app
 xattr -d -r com.apple.quarantine /Applications/Hammerspoon.app
 xattr -d -r com.apple.quarantine /Applications/iTerm.app
 xattr -d -r com.apple.quarantine /Applications/SpaceLauncher.app
+xattr -d -r com.apple.quarantine /Applications/BlueJeans.app
+
+# apps that ask for "Security & Privacy -> Accessibility" permission "to control your computer", which appears to be impossible to automate thanks to SIP: bluejeans, dropbox, google drive file stream, hammerspoon
 
 mkdir -p "$HOME/.hammerspoon"
 if [[ ! -f "$HOME/.hammerspoon/init.lua" ]] || ! diff hammerspoon_init_lua "$HOME/.hammerspoon/init.lua" > /dev/null; then
