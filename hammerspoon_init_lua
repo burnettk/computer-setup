@@ -44,4 +44,30 @@ end
 
 setUpClipboardTool()
 
+hs.hotkey.bindSpec({ ctrl_option_command, "h" },
+  function()
+    hs.notify.show("Hello World!", "Welcome to Hammerspoon", "")
+  end
+)
+
+hs.hotkey.bindSpec({ ctrl_option_command, "j" },
+  function()
+    successful_execute_result = os.execute(os.getenv("HOME") .. "/projects/github/computer-setup/respond_to_mac_notifications.js")
+
+    -- i'm hoping os.execute returns a boolean like this
+    if successful_execute_result then
+      hs.notify.show("nailed it", "removed notification", "")
+    else
+      hs.notify.show("OH NO!", "DID NOT remove notification", "")
+    end
+  end
+)
+
+hs.hotkey.bindSpec({ ctrl_option_command, "i" },
+  function()
+    -- though this opens a second instance, so we should check first to see if it's already open
+    os.execute("open -nF /Applications/iTerm.app")
+  end
+)
+
 hs.alert.show("Hammerspoon config loaded")
