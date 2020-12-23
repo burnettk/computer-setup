@@ -133,6 +133,11 @@ if [[ "$USER" == "kburnett" ]]; then
 
   # make chrome the default browser
    /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --make-default-browser
+
+   mkdir -p "$HOME/projects/github"
+   pushd "$HOME/projects/github"
+   git clone git@github.com:smartserval/smartserval.git
+   # git clone git@github.com:smartserval/smartserval.git "$HOME/github"
 fi
 
 if [[ -f "$HOME/Google Drive File Stream/My Drive/dotfiles/setup" ]]; then
