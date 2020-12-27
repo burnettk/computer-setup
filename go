@@ -14,13 +14,17 @@ fi
 sudo chmod -R 755 /usr/local/share/zsh
 
 brew list --cask > /tmp/brew_cask_list
+function install_brew_casks() {
+  echo "installing brew cask: ${@}"
+  for brew_cask in $@; do
+    if ! grep -q "$brew_cask" /tmp/brew_cask_list; then
+      echo "installing brew cask: ${brew_cask}"
+      brew install --cask "$brew_cask"
+    fi
+  done
+}
 
-for brew_cask in google-chrome dropbox google-drive-file-stream hammerspoon iterm2 spacelauncher bluejeans; do
-  if ! grep -q "$brew_cask" /tmp/brew_cask_list; then
-    echo "installing brew cask: ${brew_cask}"
-    brew install --cask "$brew_cask"
-  fi
-done
+  install_brew_casks google-chrome dropbox google-drive-file-stream hammerspoon iterm2 spacelauncher bluejeans
 
 # https://osxdaily.com/2010/09/12/disable-application-downloaded-from-the-internet-message-in-mac-os-x/
 xattr -d -r com.apple.quarantine /Applications/Google\ Chrome.app
@@ -132,12 +136,17 @@ if [[ "$USER" == "kburnett" ]]; then
   echo -e "[user]\n  name = burnettk\n  email = burnettk@users.noreply.github.com" > "$HOME/.gitconfig.user.personal"
 
   # make chrome the default browser
-   /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --make-default-browser
+  /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --make-default-browser
 
-   mkdir -p "$HOME/projects/github"
-   pushd "$HOME/projects/github"
-   git clone git@github.com:smartserval/smartserval.git
-   # git clone git@github.com:smartserval/smartserval.git "$HOME/github"
+  if [[ ! -d "$HOME/projects/github/smartserval" ]]; then
+    mkdir -p "$HOME/projects/github"
+    pushd "$HOME/projects/github"
+    git clone git@github.com:smartserval/smartserval.git
+  fi
+
+  install_brew_casks karabiner-elements inkscape
+  # xattr -d -r com.apple.quarantine /Applications/Karabiner-Elements.app
+  xattr -d -r com.apple.quarantine /Applications/Inkscape.app
 fi
 
 if [[ -f "$HOME/Google Drive File Stream/My Drive/dotfiles/setup" ]]; then
