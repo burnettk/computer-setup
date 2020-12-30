@@ -1,4 +1,4 @@
--- HYPER = {'ctrl', 'shift', 'alt', 'cmd'}
+HYPER = {'ctrl', 'shift', 'alt', 'cmd'}
 ctrl_option_command = {'ctrl', 'alt', 'cmd'}
 
 hs.loadSpoon("SpoonInstall")
@@ -44,6 +44,30 @@ end
 
 setUpClipboardTool()
 
+-- slack is in chrome tab 2
+hs.hotkey.bindSpec({HYPER, "s" },
+  function()
+    hs.notify.show("Hello World!", "Welcome to slack", "")
+    hs.application.launchOrFocus("Google Chrome")
+    hs.eventtap.keyStroke("cmd", "2")
+  end
+)
+
+-- mail is in chrome tab 1
+hs.hotkey.bindSpec({HYPER, "m" },
+  function()
+    hs.notify.show("Hello World!", "Welcome to mail", "")
+    hs.application.launchOrFocus("Google Chrome")
+    hs.eventtap.keyStroke("cmd", "1")
+  end
+)
+
+hs.hotkey.bindSpec({HYPER, "i" },
+  function()
+    hs.notify.show("Hello World!", "Welcome to iterm", "")
+    hs.application.launchOrFocus("iTerm")
+  end
+)
 hs.hotkey.bindSpec({ ctrl_option_command, "h" },
   function()
     hs.notify.show("Hello World!", "Welcome to Hammerspoon", "")
