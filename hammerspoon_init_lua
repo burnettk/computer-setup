@@ -44,6 +44,27 @@ end
 
 setUpClipboardTool()
 
+-- use vimium's search tab feature (T) to find the first chrome tab matching the term "Agile Board"
+hs.hotkey.bindSpec({HYPER, "b" },
+  function()
+    hs.notify.show("Hello World!", "Welcome to Agile Board", "")
+    hs.application.launchOrFocus("Google Chrome")
+
+    -- a random tab that will allow us to use vimium's search tab feature
+    hs.eventtap.keyStroke("cmd", "5")
+
+    hs.eventtap.keyStroke({}, "escape")
+    hs.eventtap.keyStroke("shift", "t")
+
+    hs.eventtap.keyStrokes("Agile Board")
+    hs.timer.doAfter(0.1,
+      function ()
+        hs.eventtap.keyStroke({}, "return")
+      end
+    )
+  end
+)
+
 -- slack is in chrome tab 2
 hs.hotkey.bindSpec({HYPER, "s" },
   function()
