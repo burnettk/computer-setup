@@ -65,6 +65,15 @@ hs.hotkey.bindSpec({HYPER, "b" },
   end
 )
 
+-- mail is in chrome tab 1
+hs.hotkey.bindSpec({HYPER, "m" },
+  function()
+    hs.notify.show("Hello World!", "Welcome to mail", "")
+    hs.application.launchOrFocus("Google Chrome")
+    hs.eventtap.keyStroke("cmd", "1")
+  end
+)
+
 -- slack is in chrome tab 2
 hs.hotkey.bindSpec({HYPER, "s" },
   function()
@@ -74,12 +83,21 @@ hs.hotkey.bindSpec({HYPER, "s" },
   end
 )
 
--- mail is in chrome tab 1
-hs.hotkey.bindSpec({HYPER, "m" },
+-- calendar is in chrome tab 4
+hs.hotkey.bindSpec({HYPER, "c" },
   function()
-    hs.notify.show("Hello World!", "Welcome to mail", "")
+    hs.notify.show("Hello World!", "Welcome to calendar", "")
     hs.application.launchOrFocus("Google Chrome")
-    hs.eventtap.keyStroke("cmd", "1")
+    hs.eventtap.keyStroke("cmd", "4")
+  end
+)
+
+-- karma is in chrome tab 5
+hs.hotkey.bindSpec({HYPER, "k" },
+  function()
+    hs.notify.show("Hello World!", "Welcome to karma", "")
+    hs.application.launchOrFocus("Google Chrome")
+    hs.eventtap.keyStroke("cmd", "5")
   end
 )
 
