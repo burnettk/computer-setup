@@ -1,6 +1,9 @@
 HYPER = {'ctrl', 'shift', 'alt', 'cmd'}
 ctrl_option_command = {'ctrl', 'alt', 'cmd'}
 
+-- tell hammerspoon to automatically launch on login
+hs.autoLaunch(true)
+
 hs.loadSpoon("SpoonInstall")
 
 spoon.SpoonInstall.repos.ShiftIt = {
@@ -45,7 +48,7 @@ end
 setUpClipboardTool()
 
 -- use vimium's search tab feature (T) to find the first chrome tab matching the term "Agile Board"
-hs.hotkey.bindSpec({HYPER, "b" },
+hs.hotkey.bindSpec({ HYPER, "b" },
   function()
     hs.notify.show("Hello World!", "Welcome to Agile Board", "")
     hs.application.launchOrFocus("Google Chrome")
@@ -66,7 +69,7 @@ hs.hotkey.bindSpec({HYPER, "b" },
 )
 
 -- mail is in chrome tab 1
-hs.hotkey.bindSpec({HYPER, "m" },
+hs.hotkey.bindSpec({ HYPER, "m" },
   function()
     hs.notify.show("Hello World!", "Welcome to mail", "")
     hs.application.launchOrFocus("Google Chrome")
@@ -75,7 +78,7 @@ hs.hotkey.bindSpec({HYPER, "m" },
 )
 
 -- slack is in chrome tab 2
-hs.hotkey.bindSpec({HYPER, "s" },
+hs.hotkey.bindSpec({ HYPER, "s" },
   function()
     hs.notify.show("Hello World!", "Welcome to slack", "")
     hs.application.launchOrFocus("Google Chrome")
@@ -84,7 +87,7 @@ hs.hotkey.bindSpec({HYPER, "s" },
 )
 
 -- calendar is in chrome tab 4
-hs.hotkey.bindSpec({HYPER, "c" },
+hs.hotkey.bindSpec({ HYPER, "c" },
   function()
     hs.notify.show("Hello World!", "Welcome to calendar", "")
     hs.application.launchOrFocus("Google Chrome")
@@ -93,7 +96,7 @@ hs.hotkey.bindSpec({HYPER, "c" },
 )
 
 -- karma is in chrome tab 5
-hs.hotkey.bindSpec({HYPER, "k" },
+hs.hotkey.bindSpec({ HYPER, "k" },
   function()
     hs.notify.show("Hello World!", "Welcome to karma", "")
     hs.application.launchOrFocus("Google Chrome")
@@ -101,7 +104,7 @@ hs.hotkey.bindSpec({HYPER, "k" },
   end
 )
 
-hs.hotkey.bindSpec({HYPER, "i" },
+hs.hotkey.bindSpec({ HYPER, "i" },
   function()
     hs.notify.show("Hello World!", "Welcome to iterm", "")
     hs.application.launchOrFocus("iTerm")
@@ -130,6 +133,13 @@ hs.hotkey.bindSpec({ ctrl_option_command, "i" },
   function()
     -- though this opens a second instance, so we should check first to see if it's already open
     os.execute("open -nF /Applications/iTerm.app")
+  end
+)
+
+-- https://github.com/Hammerspoon/hammerspoon/issues/834 talks about keyboard shortcut to restart
+hs.hotkey.bindSpec({ HYPER, "0" },
+  function()
+    hs.caffeinate.restartSystem()
   end
 )
 
