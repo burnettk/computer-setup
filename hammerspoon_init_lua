@@ -129,13 +129,6 @@ hs.hotkey.bindSpec({ ctrl_option_command, "j" },
   end
 )
 
-hs.hotkey.bindSpec({ ctrl_option_command, "i" },
-  function()
-    -- though this opens a second instance, so we should check first to see if it's already open
-    os.execute("open -nF /Applications/iTerm.app")
-  end
-)
-
 -- https://github.com/Hammerspoon/hammerspoon/issues/834 talks about keyboard shortcut to restart
 hs.hotkey.bindSpec({ HYPER, "0" },
   function()
