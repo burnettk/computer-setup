@@ -24,7 +24,7 @@ function install_brew_casks() {
   done
 }
 
-  install_brew_casks google-chrome dropbox google-drive-file-stream hammerspoon iterm2 spacelauncher bluejeans
+install_brew_casks google-chrome dropbox google-drive-file-stream hammerspoon iterm2 spacelauncher bluejeans
 
 # https://osxdaily.com/2010/09/12/disable-application-downloaded-from-the-internet-message-in-mac-os-x/
 xattr -d -r com.apple.quarantine /Applications/Google\ Chrome.app
@@ -147,6 +147,11 @@ if [[ "$USER" == "kburnett" ]]; then
   install_brew_casks karabiner-elements inkscape
   # xattr -d -r com.apple.quarantine /Applications/Karabiner-Elements.app
   xattr -d -r com.apple.quarantine /Applications/Inkscape.app
+
+  mkdir -p "$HOME/.config/karabiner"
+  if [[ ! -f "$HOME/.config/karabiner/karabiner.json" ]]; then
+    cp karabiner_elements/karabiner.json "$HOME/.config/karabiner/karabiner.json"
+  fi
 fi
 
 if [[ -f "$HOME/Google Drive File Stream/My Drive/dotfiles/setup" ]]; then
