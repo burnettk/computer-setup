@@ -15,7 +15,7 @@ sudo chmod -R 755 /usr/local/share/zsh
 
 brew list --cask > /tmp/brew_cask_list
 function install_brew_casks() {
-  echo "installing brew cask: ${@}"
+  echo "checking to see if we need to install any of brew casks: ${@}"
   for brew_cask in $@; do
     if ! grep -q "$brew_cask" /tmp/brew_cask_list; then
       echo "installing brew cask: ${brew_cask}"
@@ -24,15 +24,25 @@ function install_brew_casks() {
   done
 }
 
-install_brew_casks google-chrome dropbox google-drive-file-stream hammerspoon iterm2 spacelauncher bluejeans
+install_brew_casks google-chrome dropbox google-drive-file-stream hammerspoon iterm2 spacelauncher bluejeans docker
 
 # https://osxdaily.com/2010/09/12/disable-application-downloaded-from-the-internet-message-in-mac-os-x/
-xattr -d -r com.apple.quarantine /Applications/Google\ Chrome.app
+mkdir -p /var/tmp/computer_setup
+
+# i know this doesn't work for me after i've been using chrome for some time.
+# not sure if it works during first time setup before chrome has been used.
+# if so, this should fix it.
+if [[ ! -f /var/tmp/computer_setup/ran_xattr_on_google_chrome ]]; then
+  xattr -d -r com.apple.quarantine /Applications/Google\ Chrome.app
+  touch /var/tmp/computer_setup/ran_xattr_on_google_chrome
+fi
+
 xattr -d -r com.apple.quarantine /Applications/Dropbox.app
 xattr -d -r com.apple.quarantine /Applications/Hammerspoon.app
 xattr -d -r com.apple.quarantine /Applications/iTerm.app
 xattr -d -r com.apple.quarantine /Applications/SpaceLauncher.app
 xattr -d -r com.apple.quarantine /Applications/BlueJeans.app
+xattr -d -r com.apple.quarantine /Applications/Docker.app
 
 # apps that ask for "Security & Privacy -> Accessibility" permission "to control your computer", which appears to be impossible to automate thanks to SIP: bluejeans, dropbox, google drive file stream, hammerspoon
 
