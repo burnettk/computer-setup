@@ -15,7 +15,7 @@ sudo chmod -R 755 /usr/local/share/zsh
 
 brew list --cask > /tmp/brew_cask_list
 function install_brew_casks() {
-  echo "checking to see if we need to install any of brew casks: ${@}"
+  echo "ensuring brew casks installed: ${@}"
   for brew_cask in $@; do
     if ! grep -q "$brew_cask" /tmp/brew_cask_list; then
       echo "installing brew cask: ${brew_cask}"
@@ -152,6 +152,12 @@ if [[ "$USER" == "kburnett" ]]; then
     mkdir -p "$HOME/projects/github"
     pushd "$HOME/projects/github"
     git clone git@github.com:smartserval/smartserval.git
+  fi
+
+  if [[ ! -d "$HOME/projects/github/ergo-slack" ]]; then
+    mkdir -p "$HOME/projects/github"
+    pushd "$HOME/projects/github"
+    git clone git@github.com:burnettk/ergo-slack.git
   fi
 
   install_brew_casks karabiner-elements inkscape
