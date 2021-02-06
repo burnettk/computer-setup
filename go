@@ -151,7 +151,7 @@ if [[ "$USER" == "kburnett" ]]; then
   if [[ ! -d "$HOME/projects/github/smartserval" ]]; then
     mkdir -p "$HOME/projects/github"
     pushd "$HOME/projects/github"
-    git clone git@github.com:smartserval/smartserval.git
+    git clone git@github.com-serval:smartserval/smartserval.git
   fi
 
   if [[ ! -d "$HOME/projects/github/ergo-slack" ]]; then
