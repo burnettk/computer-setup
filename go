@@ -158,6 +158,7 @@ if [[ "$USER" == "kburnett" ]]; then
     mkdir -p "$HOME/projects/github"
     pushd "$HOME/projects/github"
     git clone git@github.com:burnettk/ergo-slack.git
+    popd
   fi
 
   install_brew_casks karabiner-elements inkscape
@@ -170,7 +171,8 @@ if [[ "$USER" == "kburnett" ]]; then
   fi
 fi
 
-if [[ -f "$HOME/Google Drive File Stream/My Drive/dotfiles/setup" ]]; then
-  echo 'running ~/Google Drive File Stream/My Drive/dotfiles/setup'
-  "$HOME/Google Drive File Stream/My Drive/dotfiles/setup"
+if [[ -f "$HOME/Google Drive/My Drive/dotfiles/setup" ]]; then
+  echo 'running ~/Google Drive/My Drive/dotfiles/setup'
+  chmod a+x "$HOME/Google Drive/My Drive/dotfiles/setup"
+  "$HOME/Google Drive/My Drive/dotfiles/setup"
 fi
