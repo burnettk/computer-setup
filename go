@@ -24,7 +24,8 @@ function install_brew_casks() {
   done
 }
 
-install_brew_casks google-chrome dropbox google-drive-file-stream hammerspoon iterm2 spacelauncher bluejeans docker
+install_brew_casks google-chrome dropbox hammerspoon iterm2 bluejeans docker
+# install_brew_casks spacelauncher
 
 # https://osxdaily.com/2010/09/12/disable-application-downloaded-from-the-internet-message-in-mac-os-x/
 mkdir -p /var/tmp/computer_setup
@@ -40,7 +41,7 @@ fi
 xattr -d -r com.apple.quarantine /Applications/Dropbox.app
 xattr -d -r com.apple.quarantine /Applications/Hammerspoon.app
 xattr -d -r com.apple.quarantine /Applications/iTerm.app
-xattr -d -r com.apple.quarantine /Applications/SpaceLauncher.app
+# xattr -d -r com.apple.quarantine /Applications/SpaceLauncher.app
 xattr -d -r com.apple.quarantine /Applications/BlueJeans.app
 xattr -d -r com.apple.quarantine /Applications/Docker.app
 
@@ -161,7 +162,7 @@ if [[ "$USER" == "kburnett" ]]; then
     popd
   fi
 
-  install_brew_casks karabiner-elements inkscape
+  install_brew_casks karabiner-elements inkscape google-drive-file-stream
   # xattr -d -r com.apple.quarantine /Applications/Karabiner-Elements.app
   xattr -d -r com.apple.quarantine /Applications/Inkscape.app
 
