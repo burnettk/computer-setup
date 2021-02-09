@@ -24,7 +24,7 @@ function install_brew_casks() {
   done
 }
 
-install_brew_casks google-chrome dropbox hammerspoon iterm2 bluejeans docker
+install_brew_casks dropbox hammerspoon iterm2 bluejeans docker
 # install_brew_casks spacelauncher
 
 # https://osxdaily.com/2010/09/12/disable-application-downloaded-from-the-internet-message-in-mac-os-x/
@@ -33,10 +33,6 @@ mkdir -p /var/tmp/computer_setup
 # i know this doesn't work for me after i've been using chrome for some time.
 # not sure if it works during first time setup before chrome has been used.
 # if so, this should fix it.
-if [[ ! -f /var/tmp/computer_setup/ran_xattr_on_google_chrome ]]; then
-  xattr -d -r com.apple.quarantine /Applications/Google\ Chrome.app
-  touch /var/tmp/computer_setup/ran_xattr_on_google_chrome
-fi
 
 xattr -d -r com.apple.quarantine /Applications/Dropbox.app
 xattr -d -r com.apple.quarantine /Applications/Hammerspoon.app
@@ -145,9 +141,6 @@ defaults write com.googlecode.iterm2 "Default Bookmark Guid" "27a2b543-1d6b-4cd9
 # stuff specific to me
 if [[ "$USER" == "kburnett" ]]; then
   echo -e "[user]\n  name = burnettk\n  email = burnettk@users.noreply.github.com" > "$HOME/.gitconfig.user.personal"
-
-  # make chrome the default browser
-  /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --make-default-browser
 
   if [[ ! -d "$HOME/projects/github/smartserval" ]]; then
     mkdir -p "$HOME/projects/github"
