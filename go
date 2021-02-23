@@ -24,7 +24,7 @@ function install_brew_casks() {
   done
 }
 
-install_brew_casks google-chrome dropbox hammerspoon iterm2 bluejeans docker
+install_brew_casks dropbox hammerspoon iterm2 bluejeans docker
 
 installed_chrome="false"
 if [[ ! -d "/Applications/Google Chrome.app" ]]; then
