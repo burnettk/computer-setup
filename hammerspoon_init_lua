@@ -116,6 +116,13 @@ hs.hotkey.bindSpec({ ctrl_option_command, "h" },
   end
 )
 
+-- macro to type {code} in jira
+hs.hotkey.bindSpec({ HYPER, "o" },
+  function()
+    hs.eventtap.keyStrokes("{code}")
+  end
+)
+
 hs.hotkey.bindSpec({ ctrl_option_command, "j" },
   function()
     successful_execute_result = os.execute(os.getenv("HOME") .. "/projects/github/computer-setup/respond_to_mac_notifications.js")
