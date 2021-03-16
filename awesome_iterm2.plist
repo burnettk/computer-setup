@@ -7,7 +7,14 @@
       "Normal Font" : "Monaco 15",
       "Non Ascii Font" : "Monaco 15",
       "Silence Bell": true,
-      "Prompt Before Closing 2" : false
+      "Prompt Before Closing 2" : false,
+      "Keyboard Map" : {
+        "0x72-0x100000-0xf" : {
+          "Label" : "",
+          "Action" : 13,
+          "Text" : ""
+        }
+      }
     }
   ]
 }
