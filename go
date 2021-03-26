@@ -173,14 +173,15 @@ if [[ "$USER" == "kburnett" ]]; then
     popd
   fi
 
-  install_brew_casks karabiner-elements inkscape google-drive-file-stream
-  # xattr -d -r com.apple.quarantine /Applications/Karabiner-Elements.app
-  xattr -d -r com.apple.quarantine /Applications/Inkscape.app
+  install_brew_casks inkscape
+fi
 
-  mkdir -p "$HOME/.config/karabiner"
-  if [[ ! -f "$HOME/.config/karabiner/karabiner.json" ]]; then
-    cp karabiner_elements/karabiner.json "$HOME/.config/karabiner/karabiner.json"
-  fi
+install_brew_casks karabiner-elements google-drive-file-stream
+# xattr -d -r com.apple.quarantine /Applications/Karabiner-Elements.app
+
+mkdir -p "$HOME/.config/karabiner"
+if [[ ! -f "$HOME/.config/karabiner/karabiner.json" ]]; then
+  cp karabiner_elements/karabiner.json "$HOME/.config/karabiner/karabiner.json"
 fi
 
 if [[ -f "$HOME/Google Drive/My Drive/dotfiles/setup" ]]; then
