@@ -11,6 +11,8 @@ fi
 if ! test -w "/usr/local/share/zsh"; then
   echo 'about to run sudo chmod -R 755 /usr/local/share/zsh'
 fi
+
+echo 'This may prompt for your computer password'
 sudo chmod -R 755 /usr/local/share/zsh
 
 brew list --cask > /tmp/brew_cask_list
