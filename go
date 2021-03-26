@@ -83,13 +83,14 @@ if ! defaults read com.apple.Dock autohide &> /dev/null; then
 fi
 
 # reference: https://www.jamf.com/jamf-nation/discussions/10576/menu-bar-customization
-current_menu_extras="$(defaults read com.apple.systemuiserver menuExtras)"
-if ! grep -q Volume <<< "$current_menu_extras"; then
-  echo 'adding Volume to Menu Extras'
-  if [[ -d "/System/Library/CoreServices/Menu Extras/Volume.menu" ]]; then
-    open "/System/Library/CoreServices/Menu Extras/Volume.menu"
-  fi
-fi
+# maybe no longer works in big sur
+# current_menu_extras="$(defaults read com.apple.systemuiserver menuExtras)"
+# if ! grep -q Volume <<< "$current_menu_extras"; then
+#   echo 'adding Volume to Menu Extras'
+#   if [[ -d "/System/Library/CoreServices/Menu Extras/Volume.menu" ]]; then
+#     open "/System/Library/CoreServices/Menu Extras/Volume.menu"
+#   fi
+# fi
 
 if [[ ! -f "$HOME/Library/Application Support/iTerm2/DynamicProfiles/awesome_iterm2.plist" ]]; then
   # https://apple.stackexchange.com/questions/92173/how-to-prevent-terminal-from-resizing-when-font-size-is-changed
