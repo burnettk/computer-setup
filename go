@@ -162,23 +162,30 @@ if [[ "$USER" == "kburnett" ]]; then
     /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --make-default-browser
   fi
 
-  if [[ ! -d "$HOME/projects/github/smartserval" ]]; then
-    mkdir -p "$HOME/projects/github"
-    pushd "$HOME/projects/github"
-    git clone git@github.com-serval:smartserval/smartserval.git
-  fi
+  # this file will only exist after Google Drive/My Drive/dotfiles/setup has run below, so will need a re-run
+  if [[ -f "$HOME/.ssh/serval.pub" ]]; then
+    if [[ ! -d "$HOME/projects/github/smartserval" ]]; then
+      mkdir -p "$HOME/projects/github"
+      pushd "$HOME/projects/github"
+      git clone git@github.com-serval:smartserval/smartserval.git
+    fi
 
-  if [[ ! -d "$HOME/projects/github/ergo-slack" ]]; then
-    mkdir -p "$HOME/projects/github"
-    pushd "$HOME/projects/github"
-    git clone git@github.com:burnettk/ergo-slack.git
-    popd
+    if [[ ! -d "$HOME/projects/github/ergo-slack" ]]; then
+      mkdir -p "$HOME/projects/github"
+      pushd "$HOME/projects/github"
+      git clone git@github.com:burnettk/ergo-slack.git
+      popd
+    fi
+
+    if [[ "$(git config --get remote.origin.url)" == "https://github.com/burnettk/computer-setup.git" ]]; then
+      git remote set-url origin 'git@github.com:burnettk/computer-setup.git'
+    fi
   fi
 
   install_brew_casks inkscape
 fi
 
-install_brew_casks karabiner-elements google-drive-file-stream
+install_brew_casks karabiner-elements google-drive
 # xattr -d -r com.apple.quarantine /Applications/Karabiner-Elements.app
 
 mkdir -p "$HOME/.config/karabiner"
