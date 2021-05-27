@@ -19,6 +19,8 @@ spoon.SpoonInstall:andUse("ReloadConfiguration", {})
 spoon.ReloadConfiguration:bindHotkeys({
   reloadConfiguration = {ctrl_option_command, "r"}
 })
+spoon.SpoonInstall:andUse("Calendar", {})
+-- spoon.SpoonInstall:andUse("HCalendar", {})
 -- spoon.ReloadConfiguration:start()
 
 
