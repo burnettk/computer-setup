@@ -42,6 +42,10 @@ function setUpClipboardTool()
   spoon.ClipboardTool:start()
 end
 
+function showHelp()
+  hs.alert.show("Hyper Key Macros:\n\no: {code}\ny: mysql --defaults-file=/etc/mysql/myadmin.cnf")
+end
+
 -- Main
 
 -- function from here:
@@ -113,15 +117,24 @@ hs.hotkey.bindSpec({ HYPER, "i" },
   end
 )
 hs.hotkey.bindSpec({ ctrl_option_command, "h" },
-  function()
-    hs.notify.show("Hello World!", "Welcome to Hammerspoon", "")
-  end
+  showHelp
+)
+
+hs.hotkey.bindSpec({ HYPER, "h" },
+  showHelp
 )
 
 -- macro to type {code} in jira
 hs.hotkey.bindSpec({ HYPER, "o" },
   function()
     hs.eventtap.keyStrokes("{code}")
+  end
+)
+
+-- macro to type the following: mysql --defaults-file=/etc/mysql/myadmin.cnf
+hs.hotkey.bindSpec({ HYPER, "y" },
+  function()
+    hs.eventtap.keyStrokes("sudo mysql --defaults-file=/etc/mysql/myadmin.cnf")
   end
 )
 
