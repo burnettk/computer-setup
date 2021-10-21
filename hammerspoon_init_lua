@@ -43,7 +43,7 @@ function setUpClipboardTool()
 end
 
 function showHelp()
-  hs.alert.show("Hyper Key Macros:\n\no: {code}\ny: mysql --defaults-file=/etc/mysql/myadmin.cnf")
+  hs.alert.show("Hyper Key Macros:\n\no: {code}\ny: mysql --defaults-file=/etc/mysql/myadmin.cnf\nd: du -sh * | sort -h")
 end
 
 -- Main
@@ -128,6 +128,13 @@ hs.hotkey.bindSpec({ HYPER, "h" },
 hs.hotkey.bindSpec({ HYPER, "o" },
   function()
     hs.eventtap.keyStrokes("{code}")
+  end
+)
+
+-- macro to type the following: du -sh * | sort -h
+hs.hotkey.bindSpec({ HYPER, "d" },
+  function()
+    hs.eventtap.keyStrokes("du -sh * | sort -h")
   end
 )
 
