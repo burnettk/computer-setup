@@ -43,7 +43,7 @@ function setUpClipboardTool()
 end
 
 function showHelp()
-  hs.alert.show("Hyper Key Macros:\n\no: {code}\ny: mysql --defaults-file=/etc/mysql/myadmin.cnf\nd: du -sh * | sort -h")
+  hs.alert.show("Hyper Key Macros:\n\no: {code}\ny: mysql --defaults-file=/etc/mysql/myadmin.cnf\nd: du -sh * | sort -h\nl: sudo /usr/local/scripts/MySQL/Scripts/clean-binlogs.sh test")
 end
 
 -- Main
@@ -135,6 +135,13 @@ hs.hotkey.bindSpec({ HYPER, "o" },
 hs.hotkey.bindSpec({ HYPER, "d" },
   function()
     hs.eventtap.keyStrokes("du -sh * | sort -h")
+  end
+)
+
+-- macro to type the following: sudo /usr/local/scripts/MySQL/Scripts/clean-binlogs.sh test
+hs.hotkey.bindSpec({ HYPER, "l" },
+  function()
+    hs.eventtap.keyStrokes("sudo /usr/local/scripts/MySQL/Scripts/clean-binlogs.sh test")
   end
 )
 
