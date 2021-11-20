@@ -43,7 +43,7 @@ function setUpClipboardTool()
 end
 
 function showHelp()
-  hs.alert.show("Hyper Key Macros:\n\no: {code}\ny: mysql --defaults-file=/etc/mysql/myadmin.cnf\nd: du -sh * | sort -h\nl: sudo /usr/local/scripts/MySQL/Scripts/clean-binlogs.sh test")
+  hs.alert.show("Hyper Key Macros:\n\no: {code}\ny: mysql --defaults-file=/etc/mysql/myadmin.cnf\nd: du -sh * | sort -h\nl: sudo /usr/local/scripts/MySQL/Scripts/clean-binlogs.sh test\nv: \"paste\" command and output without the extra unpretty stuff from the prompt")
 end
 
 -- Main
@@ -71,6 +71,23 @@ hs.hotkey.bindSpec({ HYPER, "b" },
         hs.eventtap.keyStroke({}, "return")
       end
     )
+  end
+)
+
+-- "paste" command and output without the extra unpretty stuff from the prompt
+hs.hotkey.bindSpec({ HYPER, "v" },
+  function()
+    hs.notify.show("Hello World!", "updating clipboard text for pasting command and output", "")
+    local selectedText = hs.pasteboard.getContents()
+    local updatedText = string.gsub(selectedText, ".*> ", "> ")
+    hs.pasteboard.setContents(updatedText)
+    -- why doAfter? https://githubmemory.com/repo/Hammerspoon/hammerspoon/issues/2889
+    hs.timer.doAfter(0.5,
+      function ()
+        hs.eventtap.keyStroke("cmd", "v")
+      end
+    )
+    hs.notify.show("Hello World!", "doing it. updating clipboard text for pasting command and output", "")
   end
 )
 
