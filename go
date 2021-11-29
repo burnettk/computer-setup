@@ -153,7 +153,21 @@ defaults write com.googlecode.iterm2 "Default Bookmark Guid" "27a2b543-1d6b-4cd9
 # curl -s --fail 'https://raw.githubusercontent.com/altercation/solarized/master/iterm2-colors-solarized/Solarized%20Dark.itermcolors -o "/tmp/Solarized Dark.itermcolors"
 # open "/tmp/Solarized Dark.itermcolors"
 
-# stuff specific to me
+install_brew_casks karabiner-elements google-drive
+# xattr -d -r com.apple.quarantine /Applications/Karabiner-Elements.app
+
+mkdir -p "$HOME/.config/karabiner"
+if [[ ! -f "$HOME/.config/karabiner/karabiner.json" ]]; then
+  cp karabiner_elements/karabiner.json "$HOME/.config/karabiner/karabiner.json"
+fi
+
+if [[ -f "$HOME/Google Drive/My Drive/dotfiles/setup" ]]; then
+  echo 'running ~/Google Drive/My Drive/dotfiles/setup'
+  chmod a+x "$HOME/Google Drive/My Drive/dotfiles/setup"
+  "$HOME/Google Drive/My Drive/dotfiles/setup"
+fi
+
+# stuff specific to kburnett
 if [[ "$USER" == "kburnett" ]]; then
   echo -e "[user]\n  name = burnettk\n  email = burnettk@users.noreply.github.com" > "$HOME/.gitconfig.user.personal"
 
@@ -162,7 +176,7 @@ if [[ "$USER" == "kburnett" ]]; then
     /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --make-default-browser
   fi
 
-  # this file will only exist after Google Drive/My Drive/dotfiles/setup has run below, so will need a re-run
+  # this file will only exist after Google Drive/My Drive/dotfiles/setup has run
   if [[ -f "$HOME/.ssh/serval.pub" ]]; then
     if [[ ! -d "$HOME/projects/github/smartserval" ]]; then
       mkdir -p "$HOME/projects/github"
@@ -183,18 +197,4 @@ if [[ "$USER" == "kburnett" ]]; then
   fi
 
   install_brew_casks inkscape
-fi
-
-install_brew_casks karabiner-elements google-drive
-# xattr -d -r com.apple.quarantine /Applications/Karabiner-Elements.app
-
-mkdir -p "$HOME/.config/karabiner"
-if [[ ! -f "$HOME/.config/karabiner/karabiner.json" ]]; then
-  cp karabiner_elements/karabiner.json "$HOME/.config/karabiner/karabiner.json"
-fi
-
-if [[ -f "$HOME/Google Drive/My Drive/dotfiles/setup" ]]; then
-  echo 'running ~/Google Drive/My Drive/dotfiles/setup'
-  chmod a+x "$HOME/Google Drive/My Drive/dotfiles/setup"
-  "$HOME/Google Drive/My Drive/dotfiles/setup"
 fi
