@@ -141,6 +141,52 @@ hs.hotkey.bindSpec({ HYPER, "h" },
   showHelp
 )
 
+-- mirror displays
+hs.hotkey.bindSpec({ HYPER, "r" },
+  function()
+    local all_screens = hs.screen.allScreens()
+
+    # ~= means not equals (mindblown)
+    if #all_screens ~= 1 then
+      hs.alert.show("More than one screen detected!\nNot in mirrored mode?")
+      -- hs.alert.show(all_screens[1])
+      -- hs.alert.show(all_screens[2])
+
+      -- 1 is the primary macbook screen, so making external display a mirror of built-in display
+      if all_screens[2].mirrorOf(all_screens[2], all_screens[1]) then
+        hs.alert.show('turned on mirroring')
+      else
+        hs.alert.show('failed to turn on mirroring')
+      end
+    else
+      -- it doesn't make sense to me that you have to pass the screen twice (caller and param). feels like a bug.
+      -- but the commented out code below that only passes one argument to mirrorOf and mirrorStop definitely doesn't work.
+      -- to investigate, see:
+      -- https://www.hammerspoon.org/docs/hs.screen.html#mirrorOf
+      -- https://github.com/Hammerspoon/hammerspoon/blob/master/extensions/screen/libscreen.m#L1117
+      if all_screens[1].mirrorStop(all_screens[1]) then
+        hs.alert.show('successfully called mirrorStop')
+      else
+        hs.alert.show('failed when calling mirrorStop')
+      end
+      -- screen1.mirrorStop()
+    end
+
+    return
+
+    -- local screen1 = hs.screen.primaryScreen()
+    -- hs.alert.show(screen1.id)
+    -- local screen2 = screen1.next()
+    -- hs.alert.show("next")
+    -- hs.alert.show(screen2.id)
+    -- if screen1 == screen2 then
+    --   screen1.mirrorStop()
+    -- else
+    --   screen1.mirrorOf(screen2)
+    -- end
+  end
+)
+
 -- macro to type {code} in jira
 hs.hotkey.bindSpec({ HYPER, "o" },
   function()
