@@ -8,12 +8,14 @@ if [[ ! -f hammerspoon_init_lua ]]; then
 fi
 
 # if not writable, output as an FYI. always ensure permissions regardless, since it's fast and harmless.
-if ! test -w "/usr/local/share/zsh"; then
-  echo 'about to run sudo chmod -R 755 /usr/local/share/zsh'
-fi
+if [[ -d /usr/local/share/zsh ]]; then
+  if ! test -w "/usr/local/share/zsh"; then
+    echo 'about to run sudo chmod -R 755 /usr/local/share/zsh'
+  fi
 
-echo 'This may prompt for your computer password'
-sudo chmod -R 755 /usr/local/share/zsh
+  echo 'This may prompt for your computer password'
+  sudo chmod -R 755 /usr/local/share/zsh
+fi
 
 brew list --cask > /tmp/brew_cask_list
 function install_brew_casks() {
@@ -26,7 +28,7 @@ function install_brew_casks() {
   done
 }
 
-install_brew_casks dropbox hammerspoon iterm2 bluejeans docker
+install_brew_casks dropbox hammerspoon iterm2 docker
 
 installed_chrome="false"
 if [[ ! -d "/Applications/Google Chrome.app" ]]; then
@@ -52,10 +54,9 @@ xattr -d -r com.apple.quarantine /Applications/Dropbox.app
 xattr -d -r com.apple.quarantine /Applications/Hammerspoon.app
 xattr -d -r com.apple.quarantine /Applications/iTerm.app
 # xattr -d -r com.apple.quarantine /Applications/SpaceLauncher.app
-xattr -d -r com.apple.quarantine /Applications/BlueJeans.app
 xattr -d -r com.apple.quarantine /Applications/Docker.app
 
-# apps that ask for "Security & Privacy -> Accessibility" permission "to control your computer", which appears to be impossible to automate thanks to SIP: bluejeans, dropbox, google drive file stream, hammerspoon
+# apps that ask for "Security & Privacy -> Accessibility" permission "to control your computer", which appears to be impossible to automate thanks to SIP: dropbox, google drive file stream, hammerspoon
 
 mkdir -p "$HOME/.hammerspoon"
 if [[ ! -f "$HOME/.hammerspoon/init.lua" ]] || ! diff hammerspoon_init_lua "$HOME/.hammerspoon/init.lua" > /dev/null; then
@@ -168,8 +169,9 @@ if [[ -f "$HOME/Google Drive/My Drive/dotfiles/setup" ]]; then
 fi
 
 # stuff specific to kburnett
-if [[ "$USER" == "kburnett" ]]; then
-  echo -e "[user]\n  name = burnettk\n  email = burnettk@users.noreply.github.com" > "$HOME/.gitconfig.user.personal"
+if [[ "$USER" == "kevin" ]] || [[ "$USER" == "burnettk" ]]; then
+  # handled by user-dotfiles
+  # echo -e "[user]\n  name = burnettk\n  email = burnettk@users.noreply.github.com" > "$HOME/.gitconfig.user.personal"
 
   # make chrome the default browser
   if [[ "$installed_chrome" == "true" ]]; then
