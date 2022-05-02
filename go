@@ -163,9 +163,19 @@ if [[ ! -f "$HOME/.config/karabiner/karabiner.json" ]]; then
 fi
 
 if [[ -f "$HOME/Google Drive/My Drive/dotfiles/setup" ]]; then
-  echo 'running ~/Google Drive/My Drive/dotfiles/setup'
-  chmod a+x "$HOME/Google Drive/My Drive/dotfiles/setup"
-  "$HOME/Google Drive/My Drive/dotfiles/setup"
+  custom_dotfiles_setup_script="$HOME/Google Drive/My Drive/dotfiles/setup"
+elif [[ -f "$HOME/Dropbox/dotfiles/setup" ]]; then
+  custom_dotfiles_setup_script="$HOME/Dropbox/dotfiles/setup"
+else
+  custom_dotfiles_setup_script=""
+fi
+
+if [[ -n "$custom_dotfiles_setup_script" ]]; then
+  echo "running ${custom_dotfiles_setup_script}"
+  chmod a+x "$custom_dotfiles_setup_script"
+  "$custom_dotfiles_setup_script"
+else
+  echo 'NOTE: could not find custom_dotfiles_setup_script in Google Drive or Dropbox'
 fi
 
 # stuff specific to burnettk
