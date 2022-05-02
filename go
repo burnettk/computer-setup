@@ -168,10 +168,26 @@ if [[ -f "$HOME/Google Drive/My Drive/dotfiles/setup" ]]; then
   "$HOME/Google Drive/My Drive/dotfiles/setup"
 fi
 
-# stuff specific to kburnett
+# stuff specific to burnettk
 if [[ "$USER" == "kevin" ]] || [[ "$USER" == "burnettk" ]]; then
   # handled by user-dotfiles
   # echo -e "[user]\n  name = burnettk\n  email = burnettk@users.noreply.github.com" > "$HOME/.gitconfig.user.personal"
+
+  # for convenience, since burnettk needs to commit to github repos
+  # https://serverfault.com/a/701637
+  ssh-keyscan github.com | grep -E '^github.com ssh-rsa' > /tmp/githubKey
+  fingerprint="$(ssh-keygen -lf /tmp/githubKey | awk '{print $2}' | awk -F: '{print $2}')"
+  echo "github fingerprint: $fingerprint"
+  if ! grep -q "$(cat /tmp/githubKey)" ~/.ssh/known_hosts; then
+    echo "not found in known_hosts"
+    github_meta_output=$(curl -si https://api.github.com/meta)
+    if grep -q "$fingerprint" <<< "$github_meta_output"; then
+      echo "found on api.github.com, so hopefully safe. adding to known_hosts"
+      cat /tmp/githubKey >> ~/.ssh/known_hosts
+    else
+      echo 'could not find fingerprint at api.github.com'
+    fi
+  fi
 
   # make chrome the default browser
   if [[ "$installed_chrome" == "true" ]]; then
