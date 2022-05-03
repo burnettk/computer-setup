@@ -224,5 +224,5 @@ if [[ "$USER" == "kevin" ]] || [[ "$USER" == "burnettk" ]]; then
     fi
   fi
 
-  install_brew_casks inkscape
+  install_brew_casks inkscape zoom
 fi
