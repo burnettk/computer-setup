@@ -3,8 +3,12 @@
 // repl (via https://www.galvanist.com/posts/2020-03-28-jxa_notes/#access-the-repl):
 // osascript -il JavaScript
 // notificationCenter.windows()[0].buttons.whose({name: "Close"}).length
+//
+// to let this work, allow iTerm in:
+//   Security & Privacy => Privacy => Accessibility
+//   Security & Privacy => Privacy => Automation
 
-console.log("started neato.js")
+console.log("started respond_to_mac_notifications.js")
 
 function closeWindow(window, app){
   // app.displayAlert(`This is a message: ${window.buttons[1].name}`);
