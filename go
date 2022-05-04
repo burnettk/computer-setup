@@ -50,11 +50,12 @@ if [[ ! -f /var/tmp/computer_setup/ran_xattr_on_google_chrome ]]; then
   touch /var/tmp/computer_setup/ran_xattr_on_google_chrome
 fi
 
-xattr -d -r com.apple.quarantine /Applications/Dropbox.app
-xattr -d -r com.apple.quarantine /Applications/Hammerspoon.app
-xattr -d -r com.apple.quarantine /Applications/iTerm.app
-# xattr -d -r com.apple.quarantine /Applications/SpaceLauncher.app
-xattr -d -r com.apple.quarantine /Applications/Docker.app
+# previously did SpaceLauncher, too
+for app_name in Dropbox Hammerspoon iTerm Docker; do
+  if [[ -d "/Applications/${app_name}.app" ]]; then
+    xattr -d -r com.apple.quarantine "/Applications/${app_name}.app"
+  fi
+done
 
 # apps that ask for "Security & Privacy -> Accessibility" permission "to control your computer", which appears to be impossible to automate thanks to SIP: dropbox, google drive file stream, hammerspoon
 
