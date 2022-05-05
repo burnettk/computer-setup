@@ -1,6 +1,11 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
-set -eo pipefail
+function error_handler() {
+  >&2 echo "Exited with BAD EXIT CODE '${2}' in ${0} script at line: ${1}."
+  exit "$2"
+}
+trap 'error_handler ${LINENO} $?' ERR
+set -o errtrace -o errexit -o nounset -o pipefail
 
 if [[ ! -f hammerspoon_init_lua ]]; then
   >&2 echo "ERROR: could not find hammerspoon_init_lua. please run this script like: ./go"
@@ -225,5 +230,5 @@ if [[ "$USER" == "kevin" ]] || [[ "$USER" == "burnettk" ]]; then
     fi
   fi
 
-  install_brew_casks inkscape zoom
+  install_brew_casks inkscape zoom adobe-acrobat-reader
 fi
