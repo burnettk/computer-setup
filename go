@@ -210,7 +210,7 @@ if [[ "$USER" == "kevin" ]] || [[ "$USER" == "burnettk" ]]; then
     /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --make-default-browser
   fi
 
-  # this file will only exist after Google Drive/My Drive/dotfiles/setup has run
+  # this file will only exist after Dropbox/dotfiles/setup has run
   if [[ -f "$HOME/.ssh/serval.pub" ]]; then
     if [[ ! -d "$HOME/projects/github/smartserval" ]]; then
       mkdir -p "$HOME/projects/github"
