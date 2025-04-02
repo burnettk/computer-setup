@@ -45,7 +45,40 @@ function setUpClipboardTool()
 end
 
 function showHelp()
-  hs.alert.show("Hyper Key Macros:\n\no: {code}\ny: mysql --defaults-file=/etc/mysql/myadmin.cnf\nd: du -sh * | sort -h\nl: sudo /usr/local/scripts/MySQL/Scripts/clean-binlogs.sh test\nv: \"paste\" command and output without the extra unpretty stuff from the prompt")
+  local helpText = [[
+Hammerspoon Hotkeys:
+
+HYPER = Ctrl + Shift + Alt + Cmd
+CtrlOptCmd = Ctrl + Alt + Cmd
+
+--- General ---
+CtrlOptCmd + r : Reload Hammerspoon Config
+CtrlOptCmd + h : Show this help
+HYPER + h      : Show this help
+HYPER + 0      : Restart System
+HYPER + r      : Toggle Display Mirroring
+
+--- Applications & Tabs ---
+HYPER + i : Switch to iTerm
+HYPER + m : Switch to Mail (Chrome Tab 1)
+HYPER + s : Switch to Slack (Chrome Tab 2)
+HYPER + c : Switch to Calendar (Chrome Tab 4)
+HYPER + k : Switch to Karma (Chrome Tab 5)
+HYPER + b : Open Agile Board (Chrome Search)
+
+--- Clipboard & Typing ---
+CtrlOptCmd + v : Toggle Clipboard History
+HYPER + v      : Clean clipboard text & paste
+HYPER + o      : Type {code}
+HYPER + d      : Type 'du -sh * | sort -h'
+HYPER + l      : Type 'sudo .../clean-binlogs.sh test'
+HYPER + y      : Type 'sudo mysql --defaults-file=...'
+
+--- Other ---
+CtrlOptCmd + j : Run notification dismissal script
+]]
+  -- Show the alert for 30 seconds instead of the default 5
+  hs.alert.show(helpText, 30)
 end
 
 -- Main
