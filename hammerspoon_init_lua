@@ -24,6 +24,19 @@ spoon.SpoonInstall:andUse("Calendar", {})
 -- spoon.ReloadConfiguration:start()
 
 
+-- Global state for dismissible help alert
+local helpAlertUUID = nil
+local helpModal = hs.hotkey.modal.new()
+
+-- Function to close the help alert and exit the modal
+local function closeHelpAlert()
+    if helpAlertUUID then
+        hs.alert.closeSpecific(helpAlertUUID)
+        helpAlertUUID = nil
+        helpModal:exit()
+    end
+end
+
 -- https://www.hammerspoon.org/Spoons/ClipboardTool
 function setUpClipboardTool()
   spoon.SpoonInstall:andUse("ClipboardTool", {})
@@ -77,8 +90,25 @@ HYPER + y      : Type 'sudo mysql --defaults-file=...'
 --- Other ---
 CtrlOptCmd + j : Run notification dismissal script
 ]]
-  -- Show the alert for 30 seconds instead of the default 5
-  hs.alert.show(helpText, 30)
+  if helpAlertUUID then
+    -- If help is already showing, close it
+    closeHelpAlert()
+  else
+    -- Otherwise, show help for 30 seconds and set up dismissal
+    -- The closeCallback ensures cleanup happens whether it times out or is closed manually
+    helpAlertUUID = hs.alert.show(helpText, { closeCallback = closeHelpAlert }, nil, 30)
+    if helpAlertUUID then
+      -- Bind Escape within the modal to close the help alert manually
+      helpModal:bind({}, "escape", nil, function()
+          closeHelpAlert()
+      end)
+      helpModal:enter()
+    else
+      -- Fallback in case showing the alert failed
+      hs.alert.show("Error: Could not display help alert.", 5)
+      helpAlertUUID = nil -- Ensure state is clean
+    end
+  end
 end
 
 -- Main
