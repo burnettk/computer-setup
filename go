@@ -22,7 +22,7 @@ if [[ -d /usr/local/share/zsh ]]; then
   sudo chmod -R 755 /usr/local/share/zsh
 fi
 
-brew list --cask > /tmp/brew_cask_list
+brew list --cask >/tmp/brew_cask_list
 function install_brew_casks() {
   echo "ensuring brew casks installed: ${@}"
   for brew_cask in $@; do
@@ -50,7 +50,7 @@ mkdir -p /var/tmp/computer_setup
 # if so, this should fix it.
 if [[ ! -f /var/tmp/computer_setup/ran_xattr_on_google_chrome ]]; then
   if [[ "$installed_chrome" == "true" ]]; then
-    xattr -d -r com.apple.quarantine /Applications/Google\ Chrome.app
+    /usr/bin/xattr -d -r com.apple.quarantine /Applications/Google\ Chrome.app
   fi
   touch /var/tmp/computer_setup/ran_xattr_on_google_chrome
 fi
@@ -58,14 +58,14 @@ fi
 # previously did SpaceLauncher, too
 for app_name in Dropbox Hammerspoon iTerm Docker; do
   if [[ -d "/Applications/${app_name}.app" ]]; then
-    xattr -d -r com.apple.quarantine "/Applications/${app_name}.app"
+    /usr/bin/xattr -d -r com.apple.quarantine "/Applications/${app_name}.app"
   fi
 done
 
 # apps that ask for "Security & Privacy -> Accessibility" permission "to control your computer", which appears to be impossible to automate thanks to SIP: dropbox, google drive file stream, hammerspoon
 
 mkdir -p "$HOME/.hammerspoon"
-if [[ ! -f "$HOME/.hammerspoon/init.lua" ]] || ! diff hammerspoon_init_lua "$HOME/.hammerspoon/init.lua" > /dev/null; then
+if [[ ! -f "$HOME/.hammerspoon/init.lua" ]] || ! diff hammerspoon_init_lua "$HOME/.hammerspoon/init.lua" >/dev/null; then
   echo 'putting in place hammerspoon configs'
   cp hammerspoon_init_lua "$HOME/.hammerspoon/init.lua"
 fi
@@ -81,7 +81,7 @@ if [[ ! -d "$HOME/.hammerspoon/Spoons/SpoonInstall.spoon" ]]; then
   popd
 fi
 
-if ! defaults read com.apple.Dock autohide &> /dev/null; then
+if ! defaults read com.apple.Dock autohide &>/dev/null; then
   echo 'setting dock to auto-hide'
   defaults write com.apple.Dock autohide -bool TRUE
   killall Dock
@@ -111,7 +111,7 @@ if [[ ! -f "$HOME/Library/Application Support/iTerm2/DynamicProfiles/awesome_ite
 
   echo 'putting iterm2 plist in place'
   cp awesome_iterm2.plist "$HOME/Library/Application Support/iTerm2/DynamicProfiles/awesome_iterm2.plist"
-elif ! diff awesome_iterm2.plist "$HOME/Library/Application Support/iTerm2/DynamicProfiles/awesome_iterm2.plist" > /dev/null; then
+elif ! diff awesome_iterm2.plist "$HOME/Library/Application Support/iTerm2/DynamicProfiles/awesome_iterm2.plist" >/dev/null; then
   echo 'updating iterm2 plist'
   cp awesome_iterm2.plist "$HOME/Library/Application Support/iTerm2/DynamicProfiles/awesome_iterm2.plist"
 fi
@@ -121,18 +121,19 @@ current_clock_format="$(defaults read com.apple.menuextra.clock "DateFormat" 2>/
 if [[ "$current_clock_format" != "EEE MMM d  H:mm:ss" ]]; then
   # https://superuser.com/questions/1111908/change-os-x-date-and-time-format-in-menu-bar
   echo 'setting default clock format to 24 hour time and including the month, day of week, and day of month'
-  defaults write com.apple.menuextra.clock "DateFormat" "EEE MMM d  H:mm:ss"; killall SystemUIServer
+  defaults write com.apple.menuextra.clock "DateFormat" "EEE MMM d  H:mm:ss"
+  killall SystemUIServer
 fi
 
 # crush all iterm settings (pretty safe, since everthing is re-created by this script and the dynamic profile):
 # defaults delete com.googlecode.iterm2
 
 # faster mouse. 3 is the max from the UI. reference: https://paulminors.com/blog/how-to-speed-up-mouse-tracking-on-mac/
-defaults write -g com.apple.mouse.scaling  7
+defaults write -g com.apple.mouse.scaling 7
 
 # faster key repeat rate. reference: https://apple.stackexchange.com/a/83923
 defaults write -g InitialKeyRepeat -int 15 # normal minimum is 15 (225 ms), but you can try going down to 10
-defaults write -g KeyRepeat -int 2 # normal minimum is 2 (30 ms), but you can try going down to 1
+defaults write -g KeyRepeat -int 2         # normal minimum is 2 (30 ms), but you can try going down to 1
 
 # do not ask to quit after we tell it to quit
 defaults write com.googlecode.iterm2 PromptOnQuit -bool false
@@ -161,7 +162,7 @@ defaults write com.googlecode.iterm2 "Default Bookmark Guid" "27a2b543-1d6b-4cd9
 # open "/tmp/Solarized Dark.itermcolors"
 
 install_brew_casks karabiner-elements google-drive
-# xattr -d -r com.apple.quarantine /Applications/Karabiner-Elements.app
+# /usr/bin/xattr -d -r com.apple.quarantine /Applications/Karabiner-Elements.app
 
 mkdir -p "$HOME/.config/karabiner"
 if [[ ! -f "$HOME/.config/karabiner/karabiner.json" ]]; then
@@ -191,15 +192,15 @@ if [[ "$USER" == "kevin" ]] || [[ "$USER" == "burnettk" ]]; then
 
   # for convenience, since burnettk needs to commit to github repos
   # https://serverfault.com/a/701637
-  ssh-keyscan github.com | grep -E '^github.com ssh-rsa' > /tmp/githubKey
+  ssh-keyscan github.com | grep -E '^github.com ssh-rsa' >/tmp/githubKey
   fingerprint="$(ssh-keygen -lf /tmp/githubKey | awk '{print $2}' | awk -F: '{print $2}')"
   echo "github fingerprint: $fingerprint"
   if ! grep -q "$(cat /tmp/githubKey)" ~/.ssh/known_hosts; then
     echo "not found in known_hosts"
     github_meta_output=$(curl -si https://api.github.com/meta)
-    if grep -q "$fingerprint" <<< "$github_meta_output"; then
+    if grep -q "$fingerprint" <<<"$github_meta_output"; then
       echo "found on api.github.com, so hopefully safe. adding to known_hosts"
-      cat /tmp/githubKey >> ~/.ssh/known_hosts
+      cat /tmp/githubKey >>~/.ssh/known_hosts
     else
       echo 'could not find fingerprint at api.github.com'
     fi
