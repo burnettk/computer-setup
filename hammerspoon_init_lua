@@ -82,6 +82,7 @@ HYPER + b : Open Agile Board (Chrome Search)
 
 --- Clipboard & Typing ---
 CtrlOptCmd + v : Toggle Clipboard History
+HYPER + delete : Clear Clipboard History
 HYPER + v      : Clean clipboard text & paste
 HYPER + o      : Type {code}
 HYPER + d      : Type 'du -sh * | sort -h'
@@ -162,6 +163,14 @@ hs.hotkey.bindSpec({ HYPER, "v" },
       end
     )
     hs.notify.show("Hello World!", "doing it. updating clipboard text for pasting command and output", "")
+  end
+)
+
+-- clear clipboard history
+hs.hotkey.bindSpec({ HYPER, "delete" },
+  function()
+    spoon.ClipboardTool.clearAll()
+    hs.alert.show("Clipboard history cleared")
   end
 )
 
