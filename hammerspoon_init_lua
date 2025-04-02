@@ -58,6 +58,7 @@ function setUpClipboardTool()
 end
 
 function showHelp()
+  local helpAlertDuration = 30 -- Duration in seconds for the help alert
   local helpText = [[
 Hammerspoon Hotkeys:
 
@@ -94,15 +95,23 @@ CtrlOptCmd + j : Run notification dismissal script
     -- If help is already showing, close it
     closeHelpAlert()
   else
-    -- Otherwise, show help for 30 seconds and set up dismissal
-    -- The closeCallback ensures cleanup happens whether it times out or is closed manually
-    helpAlertUUID = hs.alert.show(helpText, { closeCallback = closeHelpAlert }, nil, 30)
+    -- Otherwise, show help for helpAlertDuration seconds and set up dismissal
+    -- The closeCallback is removed; we now use a timer for dismissal
+    helpAlertUUID = hs.alert.show(helpText, {}, nil, helpAlertDuration) -- Show for helpAlertDuration seconds
     if helpAlertUUID then
       -- Bind Escape within the modal to close the help alert manually
       helpModal:bind({}, "escape", nil, function()
           closeHelpAlert()
       end)
       helpModal:enter()
+      -- Set a timer to automatically close the alert and exit the modal after helpAlertDuration seconds
+      local currentUUID = helpAlertUUID -- Capture the current UUID for the timer
+      hs.timer.doAfter(helpAlertDuration, function()
+          -- Only close if the alert associated with this specific call is still active
+          if helpAlertUUID == currentUUID then
+              closeHelpAlert()
+          end
+      end)
     else
       -- Fallback in case showing the alert failed
       hs.alert.show("Error: Could not display help alert.", 5)
