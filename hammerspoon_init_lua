@@ -1,3 +1,7 @@
+local log = hs.logger.new("hammerspoon_init_lua")
+
+log.i('Initializing hammerspoon')
+
 HYPER = {'ctrl', 'shift', 'alt', 'cmd'}
 ctrl_option_command = {'ctrl', 'alt', 'cmd'}
 
@@ -98,6 +102,8 @@ CtrlOptCmd + j : Run notification dismissal script
   else
     -- Otherwise, show help for helpAlertDuration seconds and set up dismissal
     -- The closeCallback is removed; we now use a timer for dismissal
+    log.i("Showing help alert")
+    log.i(helpAlertDuration)
     helpAlertUUID = hs.alert.show(helpText, {}, nil, helpAlertDuration) -- Show for helpAlertDuration seconds
     if helpAlertUUID then
       -- Bind Escape within the modal to close the help alert manually
