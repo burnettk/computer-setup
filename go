@@ -233,3 +233,28 @@ if [[ "$USER" == "kevin" ]] || [[ "$USER" == "burnettk" ]]; then
 
   install_brew_casks inkscape zoom adobe-acrobat-reader
 fi
+
+echo you might need a diff that i never codified in computer-setup/go. see that script
+
+# --- gitconfig
+# +++ gitconfig
+# @@ -20,6 +20,7 @@
+#    ff = only
+#  [commit]
+#    template = ~/.gitmessage
+# +       gpgsign = true
+#  [fetch]
+#    prune = true
+#  [rebase]
+# @@ -28,3 +29,11 @@
+#    path = ~/.gitconfig.local
+#  [diff]
+#    colorMoved = zebra
+# +[gpg]
+# +       format = ssh
+# +[user]
+# +       signingkey = /Users/kevin/.ssh/id_rsa.pub
+# +[safe]
+# +       directory = /Users/kevin/projects/github/sartography/sample-process-models
+# +[maintenance]
+# +       repo = /Users/kevin/projects/github/sartography/spiff-arena
