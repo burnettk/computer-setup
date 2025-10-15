@@ -288,10 +288,10 @@ hs.hotkey.bindSpec({ HYPER, "d" },
   end
 )
 
--- macro to type the following: sudo /usr/local/scripts/MySQL/Scripts/clean-binlogs.sh test
+-- macro to type the following: samantha.holt@example.com
 hs.hotkey.bindSpec({ HYPER, "l" },
   function()
-    hs.eventtap.keyStrokes("sudo /usr/local/scripts/MySQL/Scripts/clean-binlogs.sh test")
+    hs.eventtap.keyStrokes("samantha.holt@example.com")
   end
 )
 
