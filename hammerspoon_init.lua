@@ -87,9 +87,9 @@ HYPER + b : Open Agile Board (Chrome Search)
 CtrlOptCmd + v : Toggle Clipboard History
 HYPER + delete : Clear Clipboard History
 HYPER + v      : Clean clipboard text & paste
-HYPER + o      : Type {code}
 HYPER + d      : Type 'du -sh * | sort -h'
-HYPER + l      : Type 'sudo .../clean-binlogs.sh test'
+HYPER + l      : Type 'test user 1 email'
+HYPER + o      : Type 'test user 2 email'
 HYPER + y      : Type 'sudo mysql --defaults-file=...'
 
 --- Other ---
@@ -249,7 +249,7 @@ end)
 
 -- macro to type {code} in jira
 hs.hotkey.bindSpec({ HYPER, "o" }, function()
-	hs.eventtap.keyStrokes("{code}")
+	hs.eventtap.keyStrokes("hannah.wilson@smetitle.example.com")
 end)
 
 -- macro to type the following: du -sh * | sort -h
