@@ -56,7 +56,8 @@ if [[ ! -f /var/tmp/computer_setup/ran_xattr_on_google_chrome ]]; then
 fi
 
 # previously did SpaceLauncher, too
-for app_name in Dropbox Hammerspoon iTerm Docker; do
+# for app_name in Dropbox Hammerspoon iTerm Docker; do
+for app_name in Hammerspoon iTerm; do
   if [[ -d "/Applications/${app_name}.app" ]]; then
     /usr/bin/xattr -d -r com.apple.quarantine "/Applications/${app_name}.app"
   fi
