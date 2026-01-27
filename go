@@ -7,8 +7,8 @@ function error_handler() {
 trap 'error_handler ${LINENO} $?' ERR
 set -o errtrace -o errexit -o nounset -o pipefail
 
-if [[ ! -f hammerspoon_init_lua ]]; then
-  >&2 echo "ERROR: could not find hammerspoon_init_lua. please run this script like: ./go"
+if [[ ! -f hammerspoon_init.lua ]]; then
+  >&2 echo "ERROR: could not find hammerspoon_init.lua. please run this script like: ./go"
   exit 1
 fi
 
@@ -65,9 +65,9 @@ done
 # apps that ask for "Security & Privacy -> Accessibility" permission "to control your computer", which appears to be impossible to automate thanks to SIP: dropbox, google drive file stream, hammerspoon
 
 mkdir -p "$HOME/.hammerspoon"
-if [[ ! -f "$HOME/.hammerspoon/init.lua" ]] || ! diff hammerspoon_init_lua "$HOME/.hammerspoon/init.lua" >/dev/null; then
+if [[ ! -f "$HOME/.hammerspoon/init.lua" ]] || ! diff hammerspoon_init.lua "$HOME/.hammerspoon/init.lua" >/dev/null; then
   echo 'putting in place hammerspoon configs'
-  cp hammerspoon_init_lua "$HOME/.hammerspoon/init.lua"
+  cp hammerspoon_init.lua "$HOME/.hammerspoon/init.lua"
 fi
 
 if [[ ! -d "$HOME/.hammerspoon/Spoons/SpoonInstall.spoon" ]]; then
