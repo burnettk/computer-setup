@@ -260,6 +260,9 @@ end)
 -- macro to type the following: samantha.holt@example.com
 hs.hotkey.bindSpec({ HYPER, "l" }, function()
 	hs.eventtap.keyStrokes("samantha.holt@example.com")
+	hs.eventtap.keyStroke({}, "tab")
+	hs.eventtap.keyStrokes("admin123$")
+	hs.eventtap.keyStroke({}, "return")
 end)
 
 -- macro to type the following: alice.carter@example.com<Tab>admin123$
@@ -267,6 +270,7 @@ hs.hotkey.bindSpec({ HYPER, "p" }, function()
 	hs.eventtap.keyStrokes("alice.carter@example.com")
 	hs.eventtap.keyStroke({}, "tab")
 	hs.eventtap.keyStrokes("admin123$")
+	hs.eventtap.keyStroke({}, "return")
 end)
 
 -- macro to type the following: mysql --defaults-file=/etc/mysql/myadmin.cnf
