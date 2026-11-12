@@ -27,42 +27,64 @@ spoon.SpoonInstall:andUse("Calendar", {})
 -- spoon.SpoonInstall:andUse("HCalendar", {})
 -- spoon.ReloadConfiguration:start()
 
--- Global state for dismissible help alert
-local helpAlertUUID = nil
-local helpModal = hs.hotkey.modal.new()
+-- Clipboard history limits. The upstream spoon persists the whole history to
+-- hs.settings on every copy, so one giant copy (or a few screenshots) bloats it
+-- until Hammerspoon falls over.
+local CLIPBOARD_HISTORY_ENTRIES = 100
+local CLIPBOARD_MAX_TEXT_CHARS = 10000 -- longer text is truncated before storing
+local CLIPBOARD_MAX_IMAGE_BYTES = 1024 * 1024 -- larger images are not stored
 
--- Function to close the help alert and exit the modal
-local function closeHelpAlert()
-	if helpAlertUUID then
-		hs.alert.closeSpecific(helpAlertUUID)
-		helpAlertUUID = nil
-		helpModal:exit()
+local function truncateUtf8(text, maxChars)
+	local ok, cut = pcall(utf8.offset, text, maxChars + 1)
+	if ok and cut then
+		return text:sub(1, cut - 1)
 	end
+	if ok then
+		return text -- fewer than maxChars characters
+	end
+	return text:sub(1, maxChars) -- not valid utf8, fall back to bytes
 end
 
 -- https://www.hammerspoon.org/Spoons/ClipboardTool
 function setUpClipboardTool()
 	spoon.SpoonInstall:andUse("ClipboardTool", {})
-	-- ClipboardTool:start()
-	spoon.ClipboardTool.paste_on_select = true
-	spoon.ClipboardTool.show_in_menubar = false
-	spoon.ClipboardTool.max_size = true
-	spoon.ClipboardTool.max_entry_size = 4990
-	spoon.ClipboardTool.clearAll()
-	-- showHelp()
+	local ct = spoon.ClipboardTool
+	ct.paste_on_select = true
+	ct.show_in_menubar = false
+	ct.hist_size = CLIPBOARD_HISTORY_ENTRIES
+	-- the spoon's own max_size check pops a blocking dialog on every big copy
+	-- (and its "copy partially" path can crash), so we cap sizes ourselves below
+	ct.max_size = false
 
 	-- defaults to 0.8, but that seems kind of often to check
-	spoon.ClipboardTool.frequency = 2
+	ct.frequency = 2
 
-	spoon.ClipboardTool:bindHotkeys({
+	local originalPasteboardToClipboard = ct.pasteboardToClipboard
+	function ct:pasteboardToClipboard(itemType, item)
+		if type(item) ~= "string" then
+			return
+		end
+		if itemType == "image" then
+			if #item > CLIPBOARD_MAX_IMAGE_BYTES then
+				log.i("ClipboardTool: not storing image of " .. #item .. " bytes")
+				return
+			end
+		elseif #item > CLIPBOARD_MAX_TEXT_CHARS then
+			item = truncateUtf8(item, CLIPBOARD_MAX_TEXT_CHARS)
+		end
+		return originalPasteboardToClipboard(self, itemType, item)
+	end
+
+	-- start fresh on each load (also wipes any bloated history saved by older configs)
+	ct:clearAll()
+
+	ct:bindHotkeys({
 		toggle_clipboard = { ctrl_option_command, "v" },
 	})
-	spoon.ClipboardTool:start()
+	ct:start()
 end
 
-function showHelp()
-	local helpAlertDuration = 30 -- Duration in seconds for the help alert
-	local helpText = [[
+local HELP_TEXT = [[
 Hammerspoon Hotkeys:
 
 HYPER = Ctrl + Shift + Alt + Cmd
@@ -70,8 +92,8 @@ CtrlOptCmd = Ctrl + Alt + Cmd
 
 --- General ---
 CtrlOptCmd + r : Reload Hammerspoon Config
-CtrlOptCmd + h : Show this help
-HYPER + h      : Show this help
+CtrlOptCmd + h : Toggle this help (Esc also closes)
+HYPER + h      : Toggle this help (Esc also closes)
 HYPER + 0      : Restart System
 HYPER + r      : Toggle Display Mirroring
 
@@ -88,41 +110,41 @@ CtrlOptCmd + v : Toggle Clipboard History
 HYPER + delete : Clear Clipboard History
 HYPER + v      : Clean clipboard text & paste
 HYPER + d      : Type 'du -sh * | sort -h'
-HYPER + l      : Type 'test user 1 email'
-HYPER + o      : Type 'test user 2 email'
+HYPER + e      : Type 'Use ASD-STE100 Simplified Technical English.'
 HYPER + y      : Type 'sudo mysql --defaults-file=...'
 
 --- Other ---
 CtrlOptCmd + j : Run notification dismissal script
 ]]
+
+-- Help overlay: stays up until toggled off (same hotkey) or Esc. State is reset
+-- before anything that could fail, so repeated presses can never wedge it.
+local helpAlertUUID = nil
+local helpModal = hs.hotkey.modal.new()
+
+local function hideHelp()
+	local uuid = helpAlertUUID
+	helpAlertUUID = nil
+	helpModal:exit()
+	if uuid then
+		pcall(hs.alert.closeSpecific, uuid, 0)
+	end
+end
+
+helpModal:bind({}, "escape", hideHelp)
+
+function showHelp()
 	if helpAlertUUID then
-		-- If help is already showing, close it
-		closeHelpAlert()
+		hideHelp()
+		return
+	end
+	-- a non-number duration means "show until explicitly closed"
+	local ok, uuid = pcall(hs.alert.show, HELP_TEXT, {}, hs.screen.mainScreen(), true)
+	if ok and uuid then
+		helpAlertUUID = uuid
+		helpModal:enter()
 	else
-		-- Otherwise, show help for helpAlertDuration seconds and set up dismissal
-		-- The closeCallback is removed; we now use a timer for dismissal
-		log.i("Showing help alert")
-		log.i(helpAlertDuration)
-		helpAlertUUID = hs.alert.show(helpText, {}, nil, helpAlertDuration) -- Show for helpAlertDuration seconds
-		if helpAlertUUID then
-			-- Bind Escape within the modal to close the help alert manually
-			helpModal:bind({}, "escape", nil, function()
-				closeHelpAlert()
-			end)
-			helpModal:enter()
-			-- Set a timer to automatically close the alert and exit the modal after helpAlertDuration seconds
-			local currentUUID = helpAlertUUID -- Capture the current UUID for the timer
-			hs.timer.doAfter(helpAlertDuration, function()
-				-- Only close if the alert associated with this specific call is still active
-				if helpAlertUUID == currentUUID then
-					closeHelpAlert()
-				end
-			end)
-		else
-			-- Fallback in case showing the alert failed
-			hs.alert.show("Error: Could not display help alert.", 5)
-			helpAlertUUID = nil -- Ensure state is clean
-		end
+		log.e("Could not display help alert: " .. tostring(uuid))
 	end
 end
 
@@ -163,11 +185,16 @@ hs.hotkey.bindSpec({ HYPER, "v" }, function()
 	hs.notify.show("Hello World!", "doing it. updating clipboard text for pasting command and output", "")
 end)
 
--- clear clipboard history
-hs.hotkey.bindSpec({ HYPER, "delete" }, function()
-	spoon.ClipboardTool.clearAll()
+-- clear clipboard history (same call the chooser's "Clear history" item makes).
+-- "delete" is the normal Mac delete/backspace key; "forwarddelete" is fn+delete
+-- or the Del key on a full-size keyboard.
+local function clearClipboardHistory()
+	log.i("Clearing clipboard history")
+	spoon.ClipboardTool:clearAll()
 	hs.alert.show("Clipboard history cleared")
-end)
+end
+hs.hotkey.bindSpec({ HYPER, "delete" }, clearClipboardHistory)
+hs.hotkey.bindSpec({ HYPER, "forwarddelete" }, clearClipboardHistory)
 
 -- mail is in chrome tab 1
 hs.hotkey.bindSpec({ HYPER, "m" }, function()
@@ -247,30 +274,14 @@ hs.hotkey.bindSpec({ HYPER, "r" }, function()
 	-- end
 end)
 
--- macro to type {code} in jira
-hs.hotkey.bindSpec({ HYPER, "o" }, function()
-	hs.eventtap.keyStrokes("hannah.wilson@smetitle.example.com")
-end)
-
 -- macro to type the following: du -sh * | sort -h
 hs.hotkey.bindSpec({ HYPER, "d" }, function()
 	hs.eventtap.keyStrokes("du -sh * | sort -h")
 end)
 
--- macro to type the following: samantha.holt@example.com
-hs.hotkey.bindSpec({ HYPER, "l" }, function()
-	hs.eventtap.keyStrokes("samantha.holt@example.com")
-	hs.eventtap.keyStroke({}, "tab")
-	hs.eventtap.keyStrokes("admin123$")
-	hs.eventtap.keyStroke({}, "return")
-end)
-
--- macro to type the following: alice.carter@example.com<Tab>admin123$
-hs.hotkey.bindSpec({ HYPER, "p" }, function()
-	hs.eventtap.keyStrokes("alice.carter@example.com")
-	hs.eventtap.keyStroke({}, "tab")
-	hs.eventtap.keyStrokes("admin123$")
-	hs.eventtap.keyStroke({}, "return")
+-- macro to tell agents to write plainly (ASD-STE100 = Simplified Technical English)
+hs.hotkey.bindSpec({ HYPER, "e" }, function()
+	hs.eventtap.keyStrokes("Use ASD-STE100 Simplified Technical English.")
 end)
 
 -- macro to type the following: mysql --defaults-file=/etc/mysql/myadmin.cnf

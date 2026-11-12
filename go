@@ -58,8 +58,14 @@ fi
 # previously did SpaceLauncher, too
 # for app_name in Dropbox Hammerspoon iTerm Docker; do
 for app_name in Hammerspoon iTerm; do
-  if [[ -d "/Applications/${app_name}.app" ]]; then
-    /usr/bin/xattr -d -r com.apple.quarantine "/Applications/${app_name}.app"
+  app_path="/Applications/${app_name}.app"
+  # only touch apps that are actually quarantined. macOS "App Management" privacy
+  # protection blocks modifying other apps' bundles (Operation not permitted), and
+  # an already-launched app usually has no quarantine flag left to remove anyway.
+  if [[ -d "$app_path" ]] && /usr/bin/xattr -p com.apple.quarantine "$app_path" >/dev/null 2>&1; then
+    if ! /usr/bin/xattr -d -r com.apple.quarantine "$app_path"; then
+      >&2 echo "WARNING: could not remove quarantine from ${app_path}. grant your terminal App Management access (System Settings > Privacy & Security) if this matters. continuing."
+    fi
   fi
 done
 
